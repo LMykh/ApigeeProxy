@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<RaiseFault async="false" continueOnError="false" enabled="true" name="RF-400JTP">
+    <DisplayName>RF-400JTP</DisplayName>
+    <Properties/>
+    <Condition>(fault.name Matches "ExecutionFailed") </Condition>
+    <FaultResponse>
+        <Set>
+            <StatusCode>400</StatusCode>
+            <ReasonPhrase>Bad Request</ReasonPhrase>
+        </Set>
+    </FaultResponse>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+</RaiseFault>

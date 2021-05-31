@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AM-ProxyVariables">
+    <DisplayName>AM-ProxyVariables</DisplayName>
+    <AssignVariable>
+        <Name>requestScheme</Name>
+        <Ref>client.scheme</Ref>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>requestVerb</Name>
+        <Ref>request.verb</Ref>
+    </AssignVariable>
+    <AssignVariable>
+        <Name>host</Name>
+        <Ref>request.header.host</Ref>
+    </AssignVariable>
+</AssignMessage>

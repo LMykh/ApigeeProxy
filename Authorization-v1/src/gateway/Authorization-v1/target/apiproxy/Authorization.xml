@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?><APIProxy name="Authorization" revision="32">
+    <Basepaths>/auth/v1</Basepaths>
+    <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+    <CreatedAt>1620975341634</CreatedAt>
+    <CreatedBy>lohachov.mikhail@gmail.com</CreatedBy>
+    <Description>commit from a local branch. Deployed by logac</Description>
+    <DisplayName>Authorization</DisplayName>
+    <LastModifiedAt>1621961188107</LastModifiedAt>
+    <LastModifiedBy>lohachov.mikhail@gmail.com</LastModifiedBy>
+    <ManifestVersion>SHA-512:0f387e515dfd7f904249136794bc3a4348d1e7c1086f06b79fff31728ad81e9a841ad296376c0820f44a7fa85581c8a5a2ad598a41cedf4c233af21bcb7d0d7f:eu-west-1</ManifestVersion>
+    <Policies>
+        <Policy>AM-400EmptyFormParam</Policy>
+        <Policy>Assign-Message-1</Policy>
+        <Policy>EV-Credentials</Policy>
+        <Policy>GenerateAccessToken</Policy>
+        <Policy>JTP-ThreatProtection</Policy>
+        <Policy>Quota</Policy>
+        <Policy>RF-400EmptyFormParam</Policy>
+        <Policy>RF-400JTP</Policy>
+        <Policy>RF-Apikey401</Policy>
+        <Policy>RF-JTP400</Policy>
+        <Policy>SA-RateLimit</Policy>
+        <Policy>VAK-Verify-API-Key</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources/>
+    <Spec/>
+    <TargetServers/>
+    <TargetEndpoints/>
+</APIProxy>

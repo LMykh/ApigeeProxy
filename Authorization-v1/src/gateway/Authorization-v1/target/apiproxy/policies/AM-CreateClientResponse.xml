@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AM-CreateClientResponse">
+    <DisplayName>AM-CreateClientResponse</DisplayName>
+    <Set>
+        <Payload contentType="application/json">
+            {"message":"New Client - Created"}                
+            </Payload>
+        <StatusCode>201</StatusCode>
+        <ReasonPhrase>Created</ReasonPhrase>
+    </Set>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="true" transport="http" type="response"/>
+</AssignMessage>

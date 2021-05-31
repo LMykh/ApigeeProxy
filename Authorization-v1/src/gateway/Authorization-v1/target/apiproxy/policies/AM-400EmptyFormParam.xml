@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage name="AM-400EmptyFormParam" async="false" continueOnError="false" enabled="true">
+    <DisplayName>AM-400EmptyFormParam</DisplayName>
+    <Condition>request.formparam.userID = null</Condition>
+    <Set>
+        <Headers/>
+        <Payload contentType="application/json">
+                {"error":" User Parameters INVALID or EMPTY"}
+              </Payload>
+        <StatusCode>400</StatusCode>
+        <ReasonPhrase>Bad Request</ReasonPhrase>
+    </Set>
+    <IgnoreUnresolvedVariables>false</IgnoreUnresolvedVariables>
+    <AssignTo createNew="false" transport="http" type="request"/>
+</AssignMessage>

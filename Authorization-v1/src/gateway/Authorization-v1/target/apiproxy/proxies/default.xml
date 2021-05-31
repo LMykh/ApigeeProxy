@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?><ProxyEndpoint name="default">
+    <FaultRules>
+        <FaultRule name="Invalid APIkey">
+            <Step>
+                <Name>RF-Apikey401</Name>
+                <Condition>(fault.name Matches "FailedToResolveAPIKey") or (fault.name Matches "InvalidApiKey")</Condition>
+            </Step>
+        </FaultRule>
+    </FaultRules>
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step>
+                <Condition>(request.formparam.grant_type != "client_credentials")</Condition>
+                <Name>RF-400EmptyFormParam</Name>
+            </Step>
+            <Step>
+                <Condition>(request.formparam.userID = EMPTY OR request.formparam.userID = "") </Condition>
+                <Name>RF-400EmptyFormParam</Name>
+            </Step>
+            <Step>
+                <Condition>(request.formparam.Role = EMPTY OR request.formparam.Role = "") OR !(request.formparam.Role := "client" OR request.formparam.Role := "admin") </Condition>
+                <Name>RF-400EmptyFormParam</Name>
+            </Step>
+            <Step>
+                <Name>SA-RateLimit</Name>
+            </Step>
+            <Step>
+                <Name>VAK-Verify-API-Key</Name>
+            </Step>
+            <Step>
+                <Name>Quota</Name>
+            </Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+    <Flows>
+        <Flow name="accessToken">
+            <Description/>
+            <Request>
+                <Step>
+                    <Name>EV-Credentials</Name>
+                </Step>
+                <Step>
+                    <Name>GenerateAccessToken</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/access") and (request.verb = "POST")</Condition>
+        </Flow>
+    </Flows>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+    <HTTPProxyConnection>
+        <BasePath>/auth/v2</BasePath>
+        <VirtualHost>secure</VirtualHost>
+    </HTTPProxyConnection>
+    <RouteRule name="noroute"/>
+</ProxyEndpoint>
