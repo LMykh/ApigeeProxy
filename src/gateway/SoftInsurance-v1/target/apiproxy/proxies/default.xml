@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><ProxyEndpoint name="default">
+    <FaultRules>
+        <FaultRule name="Invalid APIkey">
+            <Step>
+                <Name>RC-Apikey401</Name>
+                <Condition>(fault.name Matches "FailedToResolveAPIKey") or  (fault.name Matches "InvalidApiKey")</Condition>
+            </Step>
+        </FaultRule>
+    </FaultRules>
+    <PreFlow name="PreFlow">
+        <Request>
+            <Step>
+                <Name>SA-SpikeArrest</Name>
+            </Step>
+            <Step>
+                <Name>VAK-Verify-API-Key</Name>
+            </Step>
+            <Step>
+                <Name>Quota</Name>
+            </Step>
+            <Step>
+                <Name>EV_ReqParam</Name>
+            </Step>
+            <Step>
+                <Name>AM-ProxyVariables</Name>
+            </Step>
+        </Request>
+        <Response/>
+    </PreFlow>
+    <Flows/>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response>
+            <Step>
+                <Name>JS-ResponseTransform</Name>
+            </Step>
+        </Response>
+    </PostFlow>
+    <HTTPProxyConnection>
+        <BasePath>/softinsurance/v2</BasePath>
+        <VirtualHost>secure</VirtualHost>
+    </HTTPProxyConnection>
+    <RouteRule name="client">
+        <Condition>(proxy.pathsuffix MatchesPath "/clients**")</Condition>
+        <TargetEndpoint>Client</TargetEndpoint>
+    </RouteRule>
+    <RouteRule name="catalog">
+        <Condition>(proxy.pathsuffix MatchesPath "/catalog/**")</Condition>
+        <TargetEndpoint>Catalog</TargetEndpoint>
+    </RouteRule>
+</ProxyEndpoint>

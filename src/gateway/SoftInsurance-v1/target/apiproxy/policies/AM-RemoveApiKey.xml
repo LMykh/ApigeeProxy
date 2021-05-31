@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage name="AM-RemoveApiKey">
+    <Headers>
+        <Header name="apikey"/>
+    </Headers>
+    <AssignTo createNew="false" transport="http" type="request"/>
+    <DisplayName>AM-RemoveApiKey</DisplayName>
+</AssignMessage>

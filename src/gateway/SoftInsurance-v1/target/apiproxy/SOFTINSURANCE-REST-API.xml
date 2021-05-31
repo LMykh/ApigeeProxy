@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><APIProxy name="SOFTINSURANCE-REST-API" revision="25">
+    <Basepaths>/softinsurance/v1</Basepaths>
+    <ConfigurationVersion majorVersion="4" minorVersion="0"/>
+    <CreatedAt>1619961228395</CreatedAt>
+    <CreatedBy>lohachov.mikhail@gmail.com</CreatedBy>
+    <Description>This is a sample Softinsurance server provided by ITA KH-048 Java/Node Apigee team (@since 01.03.2021)</Description>
+    <DisplayName>SOFTINSURANCE-REST-API</DisplayName>
+    <LastModifiedAt>1622109816204</LastModifiedAt>
+    <LastModifiedBy>lohachov.mikhail@gmail.com</LastModifiedBy>
+    <ManifestVersion>SHA-512:2dcb6e3287636aa33299c6ca0bf177c0ac4d8f0659f2ade46f05046f2a1f511a8a810a688bfaab5c3da5a1ab89c1a1f43ae4c7be1c57d1ece1195b1653445228:eu-west-1</ManifestVersion>
+    <Policies>
+        <Policy>AM-CreateClientResponse</Policy>
+        <Policy>AM-JWTtoHeader</Policy>
+        <Policy>AM-ProxyVariables</Policy>
+        <Policy>AM-RemoveApiKey</Policy>
+        <Policy>AM-SetCreateClient</Policy>
+        <Policy>AM-SetCreateProduct</Policy>
+        <Policy>EV_ReqParam</Policy>
+        <Policy>FC-Generate-JWT</Policy>
+        <Policy>JS-ResponseTransform</Policy>
+        <Policy>OA-VerefyAccessToken</Policy>
+        <Policy>Quota</Policy>
+        <Policy>RC-Apikey401</Policy>
+        <Policy>RF-401AccessToken</Policy>
+        <Policy>RF-403NoPremission</Policy>
+        <Policy>SA-SpikeArrest</Policy>
+        <Policy>VAK-Verify-API-Key</Policy>
+    </Policies>
+    <ProxyEndpoints>
+        <ProxyEndpoint>default</ProxyEndpoint>
+    </ProxyEndpoints>
+    <Resources>
+        <Resource>openapi://association.json</Resource>
+        <Resource>jsc://TransformResponse.js</Resource>
+        <Resource>jsc://UtilsTransformResponse.js</Resource>
+    </Resources>
+    <Spec/>
+    <TargetServers/>
+    <TargetEndpoints>
+        <TargetEndpoint>Catalog</TargetEndpoint>
+        <TargetEndpoint>Client</TargetEndpoint>
+    </TargetEndpoints>
+</APIProxy>

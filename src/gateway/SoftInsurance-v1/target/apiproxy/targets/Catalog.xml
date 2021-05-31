@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="UTF-8"?><TargetEndpoint name="Catalog">
+    <Description/>
+    <FaultRules>
+        <FaultRule name="InvalidToken">
+            <Step>
+                <Name>RF-401AccessToken</Name>
+            </Step>
+            <Condition>fault.name = "invalid_access_token"</Condition>
+        </FaultRule>
+        <FaultRule name="ExpiredToken">
+            <Step>
+                <Name>RF-401AccessToken</Name>
+            </Step>
+            <Condition>fault.name = "access_token_expired"</Condition>
+        </FaultRule>
+    </FaultRules>
+    <PreFlow name="PreFlow">
+        <Request/>
+        <Response/>
+    </PreFlow>
+    <PostFlow name="PostFlow">
+        <Request/>
+        <Response/>
+    </PostFlow>
+    <Flows>
+        <Flow name="findProductById">
+            <Description>Gets a product by id.</Description>
+            <Request/>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/products/*") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="replaceProduct">
+            <Description>Updates a product.</Description>
+            <Request>
+                <Step>
+                    <Name>OA-VerefyAccessToken</Name>
+                </Step>
+                <Step>
+                    <Name>FC-Generate-JWT</Name>
+                </Step>
+                <Step>
+                    <Name>AM-JWTtoHeader</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/products/*") and (request.verb = "PUT")</Condition>
+        </Flow>
+        <Flow name="deleteProductById">
+            <Description>Deletes a product.</Description>
+            <Request>
+                <Step>
+                    <Name>OA-VerefyAccessToken</Name>
+                </Step>
+                <Step>
+                    <Name>EV_ReqParam</Name>
+                </Step>
+                <Step>
+                    <Name>FC-Generate-JWT</Name>
+                </Step>
+                <Step>
+                    <Name>AM-JWTtoHeader</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/products/*") and (request.verb = "DELETE")</Condition>
+        </Flow>
+        <Flow name="partialUpdateProduct">
+            <Description>Updates a product.</Description>
+            <Request>
+                <Step>
+                    <Name>OA-VerefyAccessToken</Name>
+                </Step>
+                <Step>
+                    <Name>EV_ReqParam</Name>
+                </Step>
+                <Step>
+                    <Name>FC-Generate-JWT</Name>
+                </Step>
+                <Step>
+                    <Name>AM-JWTtoHeader</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/products/*") and (request.verb = "PATCH")</Condition>
+        </Flow>
+        <Flow name="getAllProductsOrFilterBySearchString">
+            <Description>Gets all the products.</Description>
+            <Request/>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/products") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="createNewProduct">
+            <Description>Creates a new product.</Description>
+            <Request>
+                <Step>
+                    <Name>OA-VerefyAccessToken</Name>
+                </Step>
+                <Step>
+                    <Condition>accesstoken.Role != "admin"</Condition>
+                    <Name>RF-403NoPremission</Name>
+                </Step>
+                <Step>
+                    <Name>FC-Generate-JWT</Name>
+                </Step>
+                <Step>
+                    <Name>AM-SetCreateProduct</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/products") and (request.verb = "POST")</Condition>
+        </Flow>
+        <Flow name="getAllPackagesCustomOrFilterBySearchString">
+            <Description>Gets all the custom packages.</Description>
+            <Request>
+                <Step>
+                    <Name>OA-VerefyAccessToken</Name>
+                </Step>
+                <Step>
+                    <Condition>accesstoken.Role != "admin"</Condition>
+                    <Name>RF-403NoPremission</Name>
+                </Step>
+                <Step>
+                    <Name>FC-Generate-JWT</Name>
+                </Step>
+                <Step>
+                    <Name>AM-JWTtoHeader</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/packages") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="createNewPackageCustom">
+            <Description>Creates a new custom package.</Description>
+            <Request>
+                <Step>
+                    <Name>OA-VerefyAccessToken</Name>
+                </Step>
+                <Step>
+                    <Name>EV_ReqParam</Name>
+                </Step>
+                <Step>
+                    <Name>FC-Generate-JWT</Name>
+                </Step>
+                <Step>
+                    <Name>AM-JWTtoHeader</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/packages") and (request.verb = "POST")</Condition>
+        </Flow>
+        <Flow name="getAllPackagesBase">
+            <Description>Gets all the base packages.</Description>
+            <Request/>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/packages/base") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="createNewPackageBase">
+            <Description>Creates a new base package.</Description>
+            <Request>
+                <Step>
+                    <Name>OA-VerefyAccessToken</Name>
+                </Step>
+                <Step>
+                    <Name>EV_ReqParam</Name>
+                </Step>
+                <Step>
+                    <Name>FC-Generate-JWT</Name>
+                </Step>
+                <Step>
+                    <Name>AM-JWTtoHeader</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/packages/base") and (request.verb = "POST")</Condition>
+        </Flow>
+        <Flow name="getProductsCostFilterByIds">
+            <Description>Gets cost all the products by ids.</Description>
+            <Request>
+                <Step>
+                    <Name>OA-VerefyAccessToken</Name>
+                </Step>
+                <Step>
+                    <Name>EV_ReqParam</Name>
+                </Step>
+                <Step>
+                    <Name>FC-Generate-JWT</Name>
+                </Step>
+                <Step>
+                    <Name>AM-JWTtoHeader</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/products/cost") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="findPackageById">
+            <Description>Gets a custom package by id.</Description>
+            <Request>
+                <Step>
+                    <Name>OA-VerefyAccessToken</Name>
+                </Step>
+                <Step>
+                    <Name>EV_ReqParam</Name>
+                </Step>
+                <Step>
+                    <Name>FC-Generate-JWT</Name>
+                </Step>
+                <Step>
+                    <Name>AM-JWTtoHeader</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/packages/*") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="deletePackageById">
+            <Description>Deletes a package.</Description>
+            <Request>
+                <Step>
+                    <Name>OA-VerefyAccessToken</Name>
+                </Step>
+                <Step>
+                    <Name>EV_ReqParam</Name>
+                </Step>
+                <Step>
+                    <Name>FC-Generate-JWT</Name>
+                </Step>
+                <Step>
+                    <Name>AM-JWTtoHeader</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/packages/*") and (request.verb = "DELETE")</Condition>
+        </Flow>
+        <Flow name="getInfoPackageById">
+            <Description>Gets a full custom package info with products.</Description>
+            <Request>
+                <Step>
+                    <Name>OA-VerefyAccessToken</Name>
+                </Step>
+                <Step>
+                    <Name>EV_ReqParam</Name>
+                </Step>
+                <Step>
+                    <Name>FC-Generate-JWT</Name>
+                </Step>
+                <Step>
+                    <Name>AM-JWTtoHeader</Name>
+                </Step>
+            </Request>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/packages/*/info") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="findPackageBaseById">
+            <Description>Gets a base package by id.</Description>
+            <Request/>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/packages/base/*") and (request.verb = "GET")</Condition>
+        </Flow>
+        <Flow name="getInfoBasePackageById">
+            <Description>Gets a full base package info with products.</Description>
+            <Request/>
+            <Response/>
+            <Condition>(proxy.pathsuffix MatchesPath "/catalog/packages/base/*/info") and (request.verb = "GET")</Condition>
+        </Flow>
+    </Flows>
+    <HTTPTargetConnection>
+        <Properties/>
+        <URL>https://softinsurance.herokuapp.com/api/v1</URL>
+    </HTTPTargetConnection>
+</TargetEndpoint>

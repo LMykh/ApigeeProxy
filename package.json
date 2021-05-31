@@ -1,0 +1,23 @@
+{
+  "name": "apigee",
+  "jest": {
+    "verbose": true,
+    "testMatch": [
+      "**/test/*.js?(x)"
+    ],
+    "testEnvironment": "node"
+  },
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Lmykh",
+  "license": "ISC",
+  "devDependencies": {
+    "axios": "^0.21.1",
+    "jest": "^26.6.3",
+    "jest-openapi": "^0.13.0"
+  }
+}

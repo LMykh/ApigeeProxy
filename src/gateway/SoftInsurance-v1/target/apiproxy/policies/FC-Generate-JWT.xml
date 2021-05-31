@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<FlowCallout async="false" continueOnError="false" enabled="true" name="FC-Generate-JWT">
+    <DisplayName>FC-Generate JWT</DisplayName>
+    <FaultRules/>
+    <Properties/>
+    <SharedFlowBundle>Generate-JWT</SharedFlowBundle>
+</FlowCallout>

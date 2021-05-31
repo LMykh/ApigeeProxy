@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AM-JWTtoHeader">
+    <DisplayName>AM-JWTtoHeaders</DisplayName>
+    <Properties/>
+    <Set>
+        <Headers>
+            <Header name="Authorization">Bearer {output-jwt}</Header>
+        </Headers>
+    </Set>
+    <Copy source="request">
+        <Verb>true</Verb>
+        <Payload>true</Payload>
+    </Copy>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="true" transport="http" type="request"/>
+</AssignMessage>

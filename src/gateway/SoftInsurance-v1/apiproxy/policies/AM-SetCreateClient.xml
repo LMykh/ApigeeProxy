@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<AssignMessage async="false" continueOnError="false" enabled="true" name="AM-SetCreateClient">
+    <DisplayName>AM-SetCreateClient</DisplayName>
+    <Properties/>
+    <Set>
+        <Headers>
+            <Header name="Authorization">Bearer {output-jwt}</Header>
+        </Headers>
+        <Payload contentType="application/json">
+      {"name":"name", "type":"string"}</Payload>
+    </Set>
+    <Copy source="request">
+        <Verb>true</Verb>
+        <Payload>true</Payload>
+    </Copy>
+    <IgnoreUnresolvedVariables>true</IgnoreUnresolvedVariables>
+    <AssignTo createNew="true" transport="http" type="request"/>
+</AssignMessage>
