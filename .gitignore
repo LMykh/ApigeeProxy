@@ -8,5 +8,3 @@
 ### Node Modules###
 /node_modules/
 
-### Tests ###
-/src/**/test/

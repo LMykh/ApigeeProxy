@@ -1,0 +1,496 @@
+  openapi: '3.0.1'
+  info:
+    title: 'SOFTINSURANCE'
+    version: '2.0'
+  servers:
+    - url: 	https://lohachovmikhail-eval-test.apigee.net/softinsurance/v2
+
+  components:
+    schemas:
+      Client:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          balance:
+            type: number
+            format: double
+          package:
+            type: string
+            format: uuid
+      Package:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          description:
+            type: string
+          price:
+            type: number
+            format: double
+          createdTime:
+            type: string
+          productIds:
+            type: array
+            items:
+              type: string
+              format: uuid
+      Product:
+        type: object
+        properties:
+          id:
+            type: string
+          name:
+            type: string
+          description:
+            type: string
+          price:
+            type: number
+            format: double
+      PackageCreate:
+        type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+          products:
+            type: array
+            items:
+              type: string
+      ProductCreate:
+        required:
+          - description
+          - name
+        type: object
+        properties:
+          name:
+            type: string
+          description:
+            type: string
+          price:
+            type: number
+
+    responses:
+      401UnauthorizedError:
+        description: Token is missing or invalid, or the user does not have access to perform the action
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: "Unauthorized"
+      403ForbiddenError:
+        description: User does not have access to perform the action
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: "Access denided"
+      404NotFoundError:
+        description: Client not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: "Client not found"
+      409AlreadyExists:
+        description: Client already exists
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: "Client already exists"
+      400BadRequest:
+        description: Missing body params
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: "Parameter missing"
+      500InternalError:
+        description: Internal error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                error:
+                  type: string
+                  example: Internal error
+
+    securitySchemes:
+      ApiKeyAuth:
+        type: apiKey
+        in: header
+        name: apikey
+      bearerAuth:
+        type: http
+        scheme: bearer
+
+
+  paths:
+    /catalog/packages:
+      get:
+        tags:
+          - catalog
+        security:
+          - ApiKeyAuth: []
+          - bearerAuth: []
+        summary: List of Packages
+        operationId: getPackagesList
+        description: Get List of Packages
+        parameters:
+          - in: query
+            name: filter
+            description: Filter by name
+            schema:
+              type: string
+        responses:
+          "200":
+            description: List of Packages
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    links:
+                      type: object
+                      properties:
+                        collection:
+                          type: object
+                          properties:
+                            href:
+                              type: string
+                              example: "https://api-server/catalog/packages"
+                    total:
+                      type: number
+                      format: int32
+                      example: 2
+                    data:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/Package"
+      post:
+        tags:
+          - catalog
+        security:
+          - ApiKeyAuth: []
+          - bearerAuth: []
+        summary: Creates a new custom package.
+        description: Creates a new custom package in the catalog.
+        operationId: createNewPackageCustom
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageCreate'
+          required: true
+        responses:
+          "201":
+            description: CREATED
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    links:
+                      type: object
+                      properties:
+                        collection:
+                          type: object
+                          properties:
+                            href:
+                              type: string
+                              example: "https://api-server/catalog/packages"
+                    total:
+                      type: number
+                      format: int32
+                      example: 1
+                    data:
+                      $ref: '#/components/schemas/Package'
+
+    /catalog/packages/base:
+      get:
+        tags:
+          - catalog
+        security:
+          - ApiKeyAuth: []
+        summary: List of base Packages
+        operationId: getBasePackagesList
+        description: Get list of base Packages
+        responses:
+          "200":
+            description: List of base Packages
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    links:
+                      type: object
+                      properties:
+                        collection:
+                          type: object
+                          properties:
+                            href:
+                              type: string
+                              example: "https://api-server/catalog/packages/base"
+                    total:
+                      type: number
+                      format: int32
+                      example: 2
+                    data:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/Package"
+
+      post:
+        tags:
+          - catalog
+        security:
+          - ApiKeyAuth: [ ]
+          - bearerAuth: [ ]
+        summary: Creates a new base package.
+        description: Creates a new base package in the catalog.
+        operationId: createNewPackageBase
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackageCreate'
+          required: true
+        responses:
+          "201":
+            description: List of base Packages
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    links:
+                      type: object
+                      properties:
+                        collection:
+                          type: object
+                          properties:
+                            href:
+                              type: string
+                              example: "https://api-server/catalog/packages/base"
+                    total:
+                      type: number
+                      format: int32
+                      example: 1
+                    data:
+                      $ref: "#/components/schemas/Package"
+
+
+    /catalog/products:
+      get:
+        tags:
+          - catalog
+        security:
+          - ApiKeyAuth: [ ]
+        summary: List of Products
+        operationId: getProductsList
+        description: Get list of Products
+        responses:
+          "200":
+            description: List of Products
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    links:
+                      type: object
+                      properties:
+                        collection:
+                          type: object
+                          properties:
+                            href:
+                              type: string
+                              example: "https://api-server/catalog/products"
+                    total:
+                      type: number
+                      format: int32
+                      example: 2
+                    data:
+                      type: array
+                      items:
+                        $ref: "#/components/schemas/Product"
+
+      post:
+        tags:
+          - catalog
+        security:
+          - ApiKeyAuth: [ ]
+          - bearerAuth: [ ]
+        summary: Creates a new product.
+        description: Creates a new product in the catalog.
+        operationId: createNewProduct
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductCreate'
+          required: true
+        responses:
+          "201":
+            description: List of Products
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    links:
+                      type: object
+                      properties:
+                        collection:
+                          type: object
+                          properties:
+                            href:
+                              type: string
+                              example: "https://api-server/catalog/products"
+                    total:
+                      type: number
+                      format: int32
+                      example: 1
+                    data:
+                      $ref: "#/components/schemas/Product"
+
+    /catalog/products/{id}:
+      get:
+        tags:
+          - catalog
+        security:
+          - ApiKeyAuth: [ ]
+        summary: Get a product by id.
+        description: Provides an id to look specific product from the catalog.
+        operationId: findProductById
+        responses:
+          "200":
+            description: Get Product
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    links:
+                      type: object
+                      properties:
+                        collection:
+                          type: object
+                          properties:
+                            href:
+                              type: string
+                              example: "https://api-server/catalog/products/{id}"
+                    total:
+                      type: number
+                      format: int32
+                      example: 1
+                    data:
+                      $ref: "#/components/schemas/Product"
+      put:
+        tags:
+          - catalog
+        security:
+          - ApiKeyAuth: [ ]
+          - bearerAuth: [ ]
+        summary: Updates a product.
+        description: Fully updates an existing product in the catalog.
+        operationId: replaceProduct
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          required: true
+        responses:
+          "200":
+            description: Get Product
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    links:
+                      type: object
+                      properties:
+                        collection:
+                          type: object
+                          properties:
+                            href:
+                              type: string
+                              example: "https://api-server/catalog/products/{id}"
+                    total:
+                      type: number
+                      format: int32
+                      example: 1
+                    data:
+                      $ref: "#/components/schemas/Product"
+      patch:
+        tags:
+          - catalog
+        summary: Updates a product.
+        description: Partially updates an existing product in the catalog.
+        operationId: partialUpdateProduct
+        requestBody:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+          required: true
+        responses:
+          "200":
+            description: Get Product
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    links:
+                      type: object
+                      properties:
+                        collection:
+                          type: object
+                          properties:
+                            href:
+                              type: string
+                              example: "https://api-server/catalog/products/{id}"
+                    total:
+                      type: number
+                      format: int32
+                      example: 1
+                    data:
+                      $ref: "#/components/schemas/Product"
+      delete:
+        tags:
+          - catalog
+        security:
+          - ApiKeyAuth: [ ]
+          - bearerAuth: [ ]
+        summary: Delete a product.
+        description: Delete an existing product in the catalog.
+        operationId: deleteProductById
+        responses:
+          "200":
+            description: OK
