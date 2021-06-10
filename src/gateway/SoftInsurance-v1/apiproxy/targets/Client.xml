@@ -2,6 +2,12 @@
 <TargetEndpoint name="Client">
     <Description/>
     <FaultRules>
+        <FaultRule name="method_not_found">
+            <Condition>(response.status.code == 404)</Condition>
+            <Step>
+                <Name>RF-404MethodNotFoundForURL</Name>
+            </Step>
+        </FaultRule>
         <FaultRule name="InvalidToken">
             <Step>
                 <Name>RF-401AccessToken</Name>
@@ -14,6 +20,13 @@
             </Step>
             <Condition>fault.name = "access_token_expired"</Condition>
         </FaultRule>
+        <FaultRule name="JSON Threat Protection Policy Faults">
+            <Step>
+                <Name>RF-400JTPResponse</Name>
+                <Condition>(fault.name Matches "ExecutionFailed") </Condition>
+            </Step>
+            <Condition>(jsonattack.JTP-ClientsProtection.failed = true) </Condition>
+        </FaultRule>
     </FaultRules>
     <PreFlow name="PreFlow">
         <Request>
@@ -25,6 +38,10 @@
             </Step>
             <Step>
                 <Name>AM-ProxyVariables</Name>
+            </Step>
+            <Step>
+                <Condition>(accesstoken.user.role != "admin")</Condition>
+                <Name>RF-403NoPremission</Name>
             </Step>
             <Step>
                 <Name>FC-Generate-JWT</Name>
@@ -68,25 +85,42 @@
         </Flow>
         <Flow name="buyPackage">
             <Description>Buy package.</Description>
-            <Request/>
+            <Request>  <Step>
+                <Condition>(urirequest.id != accesstoken.user.uuid) and (accesstoken.user.role != "admin")</Condition>
+                <Name>RF-403NoPremission</Name>
+            </Step>
+            </Request>
             <Response/>
             <Condition>(proxy.pathsuffix MatchesPath "/clients/*/buy-package") and (request.verb = "PATCH")</Condition>
         </Flow>
         <Flow name="updateClientBalance">
             <Description>Updates a client balance.</Description>
-            <Request/>
+            <Request><Step>
+                <Condition>(urirequest.id != accesstoken.user.uuid) and (accesstoken.user.role != "admin")</Condition>
+                <Name>RF-403NoPremission</Name>
+            </Step>
+            </Request>
             <Response/>
             <Condition>(proxy.pathsuffix MatchesPath "/clients/*/topup-balance") and (request.verb = "PATCH")</Condition>
         </Flow>
         <Flow name="getClientFullInfoById">
             <Description>Gets all info about client.</Description>
-            <Request/>
+            <Request>
+                <Step>
+                    <Condition>(urirequest.id != accesstoken.user.uuid) and (accesstoken.user.role != "admin")</Condition>
+                    <Name>RF-403NoPremission</Name>
+                </Step>
+            </Request>
             <Response/>
             <Condition>(proxy.pathsuffix MatchesPath "/clients/*/info") and (request.verb = "GET")</Condition>
         </Flow>
         <Flow name="getClientById">
             <Description>Gets client by id.</Description>
             <Request>
+                <Step>
+                    <Condition>(urirequest.id != accesstoken.user.uuid) and (accesstoken.user.role != "admin")</Condition>
+                    <Name>RF-403NoPremission</Name>
+                </Step>
                 <Step>
                     <Name>AM-JWTtoHeader</Name>
                 </Step>
@@ -96,13 +130,21 @@
         </Flow>
         <Flow name="deleteClientById">
             <Description>Deletes a client.</Description>
-            <Request/>
+            <Request><Step>
+                <Condition>(urirequest.id != accesstoken.user.uuid) and (accesstoken.user.role != "admin")</Condition>
+                <Name>RF-403NoPremission</Name>
+            </Step>
+            </Request>
             <Response/>
             <Condition>(proxy.pathsuffix MatchesPath "/clients/*") and (request.verb = "DELETE")</Condition>
         </Flow>
         <Flow name="updateClient">
             <Description>Partially updates a client.</Description>
-            <Request/>
+            <Request><Step>
+                <Condition>(urirequest.id != accesstoken.user.uuid) and (accesstoken.user.role != "admin")</Condition>
+                <Name>RF-403NoPremission</Name>
+            </Step>
+            </Request>
             <Response/>
             <Condition>(proxy.pathsuffix MatchesPath "/clients/*") and (request.verb = "PATCH")</Condition>
         </Flow>

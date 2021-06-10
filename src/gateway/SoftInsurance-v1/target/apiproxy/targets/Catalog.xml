@@ -5,13 +5,26 @@
             <Step>
                 <Name>RF-401AccessToken</Name>
             </Step>
-            <Condition>fault.name = "invalid_access_token"</Condition>
+            <Condition>fault.name = "invalid_access_token" </Condition>
+        </FaultRule>
+        <FaultRule name="method_not_found">
+            <Step>
+                <Name>RF-404MethodNotFoundForURL</Name>
+            </Step>
+            <Condition>(response.status.code == 404)</Condition>
         </FaultRule>
         <FaultRule name="ExpiredToken">
             <Step>
                 <Name>RF-401AccessToken</Name>
             </Step>
             <Condition>fault.name = "access_token_expired"</Condition>
+        </FaultRule>
+        <FaultRule name="JSON Threat Protection Policy Faults">
+            <Step>
+                <Name>RF-400JTPResponse</Name>
+                <Condition>(fault.name Matches "ExecutionFailed") </Condition>
+            </Step>
+            <Condition>(jsonattack.JTP-CatalogProtection.failed = true) </Condition>
         </FaultRule>
     </FaultRules>
     <PreFlow name="PreFlow">
@@ -48,6 +61,10 @@
         <Flow name="deleteProductById">
             <Description>Deletes a product.</Description>
             <Request>
+                <Step>
+                    <Condition>(accesstoken.user.role != "admin")</Condition>
+                    <Name>RF-403NoPremission</Name>
+                </Step>
                 <Step>
                     <Name>OA-VerefyAccessToken</Name>
                 </Step>

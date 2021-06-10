@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<JSONThreatProtection async="false" continueOnError="false" enabled="true" name="JTP-ClientsProtection">
+    <DisplayName>JTP-ClientsProtection</DisplayName>
+    <Properties/>
+    <ArrayElementCount>6</ArrayElementCount>
+    <ContainerDepth>2</ContainerDepth>
+    <ObjectEntryCount>3</ObjectEntryCount>
+    <ObjectEntryNameLength>11</ObjectEntryNameLength>
+    <Source>request</Source>
+    <StringValueLength>100</StringValueLength>
+</JSONThreatProtection>

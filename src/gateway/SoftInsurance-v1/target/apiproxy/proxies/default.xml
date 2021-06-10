@@ -1,5 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?><ProxyEndpoint name="default">
     <FaultRules>
+        <FaultRule name="method_not_found">
+            <Condition>(response.status.code == 404) or (fault.name = "RouteFailed")</Condition>
+            <Step>
+                <Name>RF-404MethodNotFoundForURL</Name>
+            </Step>
+        </FaultRule>
+        <FaultRule name="too_many_requests">
+            <Condition>(fault.name = "QuotaViolation") or (fault.name = "SpikeArrestViolation") </Condition>
+            <Step>
+                <Name>RF-429TooManyRequests</Name>
+            </Step>
+        </FaultRule>
         <FaultRule name="Invalid APIkey">
             <Step>
                 <Name>RC-Apikey401</Name>
@@ -14,9 +26,6 @@
             </Step>
             <Step>
                 <Name>VAK-Verify-API-Key</Name>
-            </Step>
-            <Step>
-                <Name>Quota</Name>
             </Step>
             <Step>
                 <Name>EV_ReqParam</Name>
